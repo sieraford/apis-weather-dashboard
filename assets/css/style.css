@@ -1,0 +1,24 @@
+body {
+    margin-left: 7px;
+    margin-right: 7px;
+}
+h1 {
+    text-align: end;
+    background-image: linear-gradient(to right, rgb(98, 98, 198) , rgb(58, 58, 151), rgb(31, 31, 82));   
+    padding-right: 25%;
+    color: white;
+}
+
+.btn {
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+}
+
+input {
+    width: 100%;
+}
+
+.btn-primary {
+    background-color: rgb(60, 114, 212);
+}
