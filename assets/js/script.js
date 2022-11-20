@@ -94,6 +94,7 @@ var getCurrentWeather = function () {
 var getWeatherForecast = function (user) {
     var city = searchField.value.trim();
     var cityNoSpaces = city.replace(" ", "+")
+    forecastContainer.innerHTML = "";
     var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityNoSpaces + "&appid=" + APIKey + "&units=imperial";
 
   
@@ -109,6 +110,7 @@ var getWeatherForecast = function (user) {
 
             function renderForecast(id, index) {
                 var dayCard = document.getElementById(id)
+                dayCard.innerHTML = "";
                 var dateText = data.list[index].dt_txt;
                 var dateSliced = dateText.slice(0, 10);
                 var date = dayjs(dateSliced).format('M/D/YYYY');
@@ -151,6 +153,22 @@ var getWeatherForecast = function (user) {
       });
   };
 
+  function getWeatherFromHistory(event) {
+    var element = event.target;
+    if(element.matches('.btn-secondary')){
+        searchField.value = element.textContent;   
+        getCurrentWeather();
+        getWeatherForecast();
+    }
+  }
+
+  
+  
+
+
+
+
   searchButton.addEventListener('click', getCurrentWeather);
   searchButton.addEventListener('click', getWeatherForecast);
+  document.addEventListener('click', getWeatherFromHistory);
   init();
