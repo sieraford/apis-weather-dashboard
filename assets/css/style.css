@@ -40,7 +40,8 @@ h4 {
 }
 
 .forecast-card {
-    background-color: rgb(80, 80, 80);
+    background-color: rgb(49, 49, 73);
     color: white;
     margin: 7px;
+    max-width: 150px;
 }

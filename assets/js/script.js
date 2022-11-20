@@ -3,10 +3,9 @@ var searchButton = document.getElementById("search-btn")
 var cityNameEl = document.getElementById("city-name")
 var currentContainer = document.getElementById("current-weather")
 var searchHistoryContainer = document.getElementById("search-history")
+var dayCard = document.getElementById("day-one")
 
 var APIKey = "f31f098d0ca4ea130ecb62f6ef16acc8";
-var lat;
-var long;
 
 var pastSearches = [];
 
@@ -38,7 +37,6 @@ var getCurrentWeather = function () {
     var city = searchField.value.trim();
     var cityNoSpaces = city.replace(" ", "+")
     currentContainer.innerHTML = "";
-    // var apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityNoSpaces + "&appid=" + APIKey + "&units=imperial";
   
     fetch(apiUrl)
@@ -46,8 +44,10 @@ var getCurrentWeather = function () {
         if (response.ok) {
           response.json().then(function (data) {
             var cityName = data.name;
-            var cityNameEl = document.createElement('h3')
-            cityNameEl.textContent = cityName;
+            var today = dayjs();
+            var date = today.format('M/D/YYYY');
+            var cityNameEl = document.createElement('h3');
+            cityNameEl.textContent = cityName + ` (${date})`;
 
             if (!pastSearches.includes(cityName)) {
                 pastSearches.push(cityName);
@@ -76,7 +76,7 @@ var getCurrentWeather = function () {
             currentContainer.append(windEl);
 
             var humidityEl = document.createElement('p');
-            humidityEl.textContent = "Humidity: " + data.main.humidity + " %"
+            humidityEl.textContent = "Humidity: " + data.main.humidity + "%"
             currentContainer.append(humidityEl);
 
           });
@@ -92,7 +92,6 @@ var getCurrentWeather = function () {
 var getWeatherForecast = function (user) {
     var city = searchField.value.trim();
     var cityNoSpaces = city.replace(" ", "+")
-    // var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
     var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityNoSpaces + "&appid=" + APIKey + "&units=imperial";
 
   
@@ -100,7 +99,41 @@ var getWeatherForecast = function (user) {
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (data) {
-            console.log(data);
+
+            function renderForecast(id, index) {
+                var dayCard = document.getElementById(id)
+                var dateText = data.list[index].dt_txt;
+                var dateSliced = dateText.slice(0, 10);
+                var date = dayjs(dateSliced).format('M/D/YYYY');
+                var dateEl = document.createElement('h5');
+                dateEl.textContent = date;
+                var iconcode = data.list[index].weather[0].icon;
+                var iconurl = "http://openweathermap.org/img/w/" + iconcode + ".png";
+                var iconEl = document.createElement('img')
+                iconEl.setAttribute('src', iconurl);
+                
+                dateEl.appendChild(iconEl);
+                dayCard.append(dateEl);
+            
+                var tempEl = document.createElement('p');
+                tempEl.textContent = "Temp: " + data.list[index].main.temp + "°F";
+                dayCard.append(tempEl);
+            
+                var windEl = document.createElement('p');
+                windEl.textContent = "Wind: " + data.list[index].wind.speed + " MPH"
+                dayCard.append(windEl);
+            
+                var humidityEl = document.createElement('p');
+                humidityEl.textContent = "Humidity: " + data.list[index].main.humidity + "%"
+                dayCard.append(humidityEl);
+            }
+            
+            renderForecast("day-one", 0);
+            renderForecast("day-two", 8);
+            renderForecast("day-three", 16);
+            renderForecast("day-four", 24);
+            renderForecast("day-five", 32);
+        
           });
         } else {
           alert('Error: ' + response.statusText);
