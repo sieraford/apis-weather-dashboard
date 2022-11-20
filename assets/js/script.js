@@ -4,6 +4,7 @@ var cityNameEl = document.getElementById("city-name")
 var currentContainer = document.getElementById("current-weather")
 var searchHistoryContainer = document.getElementById("search-history")
 var dayCard = document.getElementById("day-one")
+var forecastContainer = document.getElementById("forecast-container")
 
 var APIKey = "f31f098d0ca4ea130ecb62f6ef16acc8";
 
@@ -43,6 +44,7 @@ var getCurrentWeather = function () {
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (data) {
+            currentContainer.setAttribute('style', 'border: 1px solid black')
             var cityName = data.name;
             var today = dayjs();
             var date = today.format('M/D/YYYY');
@@ -99,6 +101,11 @@ var getWeatherForecast = function (user) {
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (data) {
+            
+            var forecastHeaderText = document.createElement('h4');
+            forecastHeaderText.textContent = "5-Day Forecast:";
+            forecastContainer.append(forecastHeaderText);
+
 
             function renderForecast(id, index) {
                 var dayCard = document.getElementById(id)
