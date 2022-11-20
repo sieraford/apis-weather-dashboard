@@ -10,11 +10,36 @@ var long;
 
 var pastSearches = [];
 
+// The following function renders items in a todo list as <li> elements
+function renderpastSearches() {
+    for (var i = 0; i < pastSearches.length; i++) {
+  
+        var button = document.createElement("button");
+        button.setAttribute('class', 'btn btn-secondary')
+        button.textContent = pastSearches[i]
+        searchHistoryContainer.append(button);
+    }
+  }
+
+// This function is being called below and will run when the page loads.
+function init() {
+    // Get search history from localStorage
+    var storedPastSearches = JSON.parse(localStorage.getItem("pastSearches"));
+
+      // If past searches were retrieved from localStorage, update the past searches array to include them
+  if (storedPastSearches !== null) {
+    pastSearches = storedPastSearches;
+  }
+
+    renderpastSearches();
+}
+
 var getCurrentWeather = function () {
     var city = searchField.value.trim();
+    var cityNoSpaces = city.replace(" ", "+")
     currentContainer.innerHTML = "";
     // var apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
-    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=imperial";
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityNoSpaces + "&appid=" + APIKey + "&units=imperial";
   
     fetch(apiUrl)
       .then(function (response) {
@@ -66,8 +91,9 @@ var getCurrentWeather = function () {
 
 var getWeatherForecast = function (user) {
     var city = searchField.value.trim();
+    var cityNoSpaces = city.replace(" ", "+")
     // var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
-    var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + APIKey + "&units=imperial";
+    var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityNoSpaces + "&appid=" + APIKey + "&units=imperial";
 
   
     fetch(apiUrl)
@@ -87,3 +113,4 @@ var getWeatherForecast = function (user) {
 
   searchButton.addEventListener('click', getCurrentWeather);
   searchButton.addEventListener('click', getWeatherForecast);
+  init();
