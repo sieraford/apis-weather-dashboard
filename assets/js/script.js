@@ -162,12 +162,6 @@ var getWeatherForecast = function (user) {
     }
   }
 
-  
-  
-
-
-
-
   searchButton.addEventListener('click', getCurrentWeather);
   searchButton.addEventListener('click', getWeatherForecast);
   document.addEventListener('click', getWeatherFromHistory);
