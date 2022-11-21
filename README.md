@@ -4,7 +4,7 @@
 
 I built a weather dashboard that uses the 5 Day Weather Forecast API to retrieve weather data for cities. Travelers can use this application to see current and future weather conditions for multiple cities.
 
-Click [here](https://sieraford.github.io/apis-weather-dashboard/) to view the application.
+Click [here](https://sieraford.github.io/apis-weather-dashboard-siera/) to view the application.
 
 ## Screenshots
 
